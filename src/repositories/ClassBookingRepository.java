@@ -6,3 +6,4 @@ public interface ClassBookingRepository {
     int countActiveBookingsForClass(long classId);
     List<String> attendanceHistory(long memberId);
 }
+//
