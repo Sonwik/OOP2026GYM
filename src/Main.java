@@ -131,22 +131,18 @@ public class Main {
             notificationService.notifyMember(memberId, "You booked class " + classId);
 
         } catch (BookingAlreadyExistsException e) {
-            warn("Уже есть бронь на этот класс (member=" + memberId + ", class=" + classId + ")");
-            line(DIM + "Попробую автоматически забронировать следующий classId..." + RESET);
+          warn("Уже есть бронь (member=" + memberId + ", class=" + classId + ")");
+    long altClassId = classId + 1;
 
-            long altClassId = classId + 1;
-            try {
-
-                classRepo.findById(altClassId)
-                        .orElseThrow(() -> new NotFoundException("Alt class not found: " + altClassId));
-
-                var booking2 = bookingService.bookClass(memberId, altClassId);
-                ok("Booking created for альтернативного класса ✅");
-                line("🎟️ bookingId=" + booking2.getId() + " | member=" + memberId + " | class=" + altClassId);
-                notificationService.notifyMember(memberId, "You booked class " + altClassId);
-
-            } catch (RuntimeException ex) {
-                fail("Не получилось забронировать другой класс: " + ex.getMessage());
+    line(DIM + "Пробую другой classId = " + altClassId + RESET);
+    try {
+        var booking2 = bookingService.bookClass(memberId, altClassId);
+        ok("Booking created ✅");
+        line("🎟️ bookingId=" + booking2.getId() + " | member=" + memberId + " | class=" + altClassId);
+        notificationService.notifyMember(memberId, "You booked class " + altClassId);
+    } catch (RuntimeException ex) {
+        fail("Не получилось забронировать другой класс: " + ex.getMessage());
+    }
             }
 
         } catch (RuntimeException e) {
