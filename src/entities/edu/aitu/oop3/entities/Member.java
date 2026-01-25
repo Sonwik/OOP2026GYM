@@ -27,3 +27,4 @@ public class Member {
     public void setMembershipEndDate(LocalDate membershipEndDate) { this.membershipEndDate = membershipEndDate; }
 
 }
+//
