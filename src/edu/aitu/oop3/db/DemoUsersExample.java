@@ -11,7 +11,7 @@ public class DemoUsersExample {
             createTableIfNeeded(connection);
             insertUser(connection, "Alice", "alice@example.com");
             insertUser(connection, "Bob", "bob@example.com");
-            insertUser(connection, "Isaali", "Absolute@example.com");
+            insertUser(connection, "Isali", "Absolute@example.com");
             printAllUsers(connection);
         } catch (SQLException e) {
             System.out.println("Database error:");

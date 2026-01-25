@@ -19,7 +19,7 @@ public class MembershipService {
 
     public LocalDate buyOrExtend(long memberId, long typeId) {
         Member member = memberRepo.findById(memberId)
-                .orElseThrow(() -> new NotFoundException("Member not found: " + memberId));
+                .orElseThrow(() -> new NotFoundException("Member Not found: " + memberId));
 
         MembershipType type = typeRepo.findById(typeId)
                 .orElseThrow(() -> new NotFoundException("MembershipType not found: " + typeId));

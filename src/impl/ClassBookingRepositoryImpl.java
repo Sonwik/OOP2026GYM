@@ -85,7 +85,7 @@ public class ClassBookingRepositoryImpl implements ClassBookingRepository {
                 while (rs.next()) {
                     OffsetDateTime start = rs.getObject("start_time", OffsetDateTime.class);
                     out.add("#" + rs.getLong("id") + " | " +
-                            rs.getString("title") + " | " +
+                            rs.getString("title") + "| " +
                             start + " | " +
                             rs.getString("status"));
                 }

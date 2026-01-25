@@ -30,7 +30,7 @@ import java.sql.SQLException;
 
 public class Main {
 
-    // Если IntelliJ не показывает цвета — поставь false
+
     private static final boolean USE_COLOR = true;
 
     private static final String RESET  = USE_COLOR ? "\u001B[0m"  : "";
@@ -46,7 +46,6 @@ public class Main {
 
         banner("🏋️ Fitness Club • Demo Run");
 
-        // 1) Проверка подключения
         step(1, "Подключение к Supabase");
         try (Connection connection = DatabaseConnection.getConnection()) {
             ok("Connected successfully!");
@@ -64,10 +63,8 @@ public class Main {
             return;
         }
 
-        // 2) IDB (чтобы все репозитории работали через один вход)
         IDB db = DatabaseConnection::getConnection;
 
-        // 3) Инициализация DbMapping (таблицы/колонки)
         step(2, "Инициализация маппинга таблиц/колонок");
         try {
             DbMapping.getOrCreate(db);
@@ -78,23 +75,19 @@ public class Main {
             return;
         }
 
-        // 4) Репозитории
         MemberRepository memberRepo = new MemberRepositoryImpl(db);
         MembershipTypeRepository typeRepo = new MembershipTypeRepositoryImpl(db);
         FitnessClassRepository classRepo = new FitnessClassRepositoryImpl(db);
         ClassBookingRepository bookingRepo = new ClassBookingRepositoryImpl(db);
 
-        // 5) Сервисы
         MembershipService membershipService = new MembershipService(memberRepo, typeRepo);
         BookingService bookingService = new BookingService(memberRepo, classRepo, bookingRepo);
         NotificationService notificationService = new NotificationService();
 
-        // === ДЕМО IDs (поменяй если надо) ===
         long memberId = 1;
         long typeId = 1;
         long classId = 1;
 
-        // 6) Показать “челика”, тип и класс (чтобы красиво было)
         step(3, "Загрузка данных (Member / MembershipType / FitnessClass)");
         Member member;
         MembershipType type;
@@ -119,8 +112,6 @@ public class Main {
             e.printStackTrace();
             return;
         }
-
-        // 7) Продлить membership
         step(4, "Продление membership");
         try {
             var newEnd = membershipService.buyOrExtend(memberId, typeId);
@@ -132,7 +123,6 @@ public class Main {
             return;
         }
 
-        // 8) Бронирование (красиво + если дубликат, попробуем другой classId)
         step(5, "Бронирование класса");
         try {
             var booking = bookingService.bookClass(memberId, classId);
@@ -146,7 +136,7 @@ public class Main {
 
             long altClassId = classId + 1;
             try {
-                // проверим что класс существует
+
                 classRepo.findById(altClassId)
                         .orElseThrow(() -> new NotFoundException("Alt class not found: " + altClassId));
 
@@ -164,7 +154,6 @@ public class Main {
             e.printStackTrace();
         }
 
-        // 9) История посещений
         step(6, "Attendance history");
         try {
             var history = bookingRepo.attendanceHistory(memberId);
@@ -172,9 +161,9 @@ public class Main {
                 warn("История пустая");
             } else {
                 ok("Найдено записей: " + history.size());
-                // красиво печатаем строки
+
                 for (String row : history) {
-                    // ожидаемый формат: "#id | title | time | status"
+
                     String pretty = prettifyHistoryRow(row);
                     line("📌 " + pretty);
                 }
@@ -187,7 +176,6 @@ public class Main {
         banner("✅ Done");
     }
 
-    // --------- Pretty printing helpers ----------
     private static void banner(String title) {
         String line = "══════════════════════════════════════════════════";
         System.out.println(BLUE + line + RESET);
@@ -220,7 +208,6 @@ public class Main {
     }
 
     private static String prettifyHistoryRow(String raw) {
-        // raw выглядит примерно так: "#12 | Yoga | 2026-01-25T... | BOOKED"
         String[] parts = raw.split("\\s*\\|\\s*");
         if (parts.length < 4) return raw;
         String id = parts[0].trim();

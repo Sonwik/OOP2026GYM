@@ -36,7 +36,7 @@ public class MemberRepositoryImpl implements MemberRepository {
                 LocalDate endDate = rs.getObject("membership_end_date", LocalDate.class);
 
                 return Optional.of(new Member(
-                        rs.getLong("id"),
+                        rs.getLong("Id"),
                         rs.getString("full_name"),
                         typeId,
                         endDate

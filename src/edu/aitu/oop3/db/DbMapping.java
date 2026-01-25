@@ -11,22 +11,18 @@ public final class DbMapping {
     private final String classesTable;
     private final String classBookingsTable;
 
-    // members columns
     private final String memberNameCol;
     private final String memberTypeIdCol;
     private final String memberEndDateCol;
 
-    // membership_types columns
     private final String typeNameCol;
     private final String typeDurationDaysCol;
     private final String typePriceCol;
 
-    // classes columns
     private final String classTitleCol;
     private final String classStartTimeCol;
     private final String classCapacityCol;
 
-    // class_bookings columns
     private final String bookingMemberIdCol;
     private final String bookingClassIdCol;
     private final String bookingStatusCol;
@@ -119,8 +115,6 @@ public final class DbMapping {
     public String bookingMemberIdCol() { return bookingMemberIdCol; }
     public String bookingClassIdCol() { return bookingClassIdCol; }
     public String bookingStatusCol() { return bookingStatusCol; }
-
-    // -------- helpers ----------
     private static String q(TableRef t) {
         return "\"" + t.schema + "\".\"" + t.name + "\"";
     }
@@ -161,13 +155,11 @@ public final class DbMapping {
     }
 
     private static String resolveColumn(Set<String> cols, List<String> candidatesLower) {
-        // exact match first
         for (String cand : candidatesLower) {
             for (String c : cols) {
                 if (c.equalsIgnoreCase(cand)) return c;
             }
         }
-        // contains match
         for (String cand : candidatesLower) {
             for (String c : cols) {
                 if (c.toLowerCase().contains(cand.toLowerCase())) return c;
@@ -180,14 +172,12 @@ public final class DbMapping {
                                          List<String> exactCandidates,
                                          List<String> mustContain,
                                          List<String> mustNotContain) {
-        // exact match preferred (public first because tables are ordered)
         for (String exact : exactCandidates) {
             for (TableRef t : tables) {
                 if (t.name.equalsIgnoreCase(exact)) return t;
             }
         }
 
-        // keyword match
         for (TableRef t : tables) {
             String n = t.name.toLowerCase();
 

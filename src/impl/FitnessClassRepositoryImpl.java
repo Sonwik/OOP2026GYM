@@ -38,7 +38,7 @@ public class FitnessClassRepositoryImpl implements FitnessClassRepository {
                         rs.getLong("id"),
                         rs.getString("title"),
                         start,
-                        rs.getInt("capacity")
+                        rs.getInt("Capacity")
                 ));
             }
         } catch (SQLException e) {

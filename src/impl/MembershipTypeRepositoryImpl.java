@@ -32,7 +32,7 @@ public class MembershipTypeRepositoryImpl implements MembershipTypeRepository {
                 if (!rs.next()) return Optional.empty();
 
                 return Optional.of(new MembershipType(
-                        rs.getLong("id"),
+                        rs.getLong("Id"),
                         rs.getString("name"),
                         rs.getInt("duration_days"),
                         rs.getBigDecimal("price")
