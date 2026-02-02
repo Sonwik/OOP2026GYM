@@ -33,4 +33,10 @@ values
     (1, 1, 'BOOKED'),
     (2, 2, 'BOOKED'),
     (3, 4, 'BOOKED')
-    on conflict (member_id, class_id) do nothing;
+
+    on conflict (member_id, class_id) do nothing;insert into public.membership_transactions (member_id, type_id, start_date, end_date, base_price, final_price)
+select m.id, t.id, current_date, current_date + t.duration_days, t.price, t.price
+from public.members m
+         join public.membership_types t on t.name = 'Monthly'
+where m.full_name = 'Айжан Садыкова'
+    limit 1;  
