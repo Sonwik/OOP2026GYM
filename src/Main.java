@@ -131,18 +131,18 @@ public class Main {
             notificationService.notifyMember(memberId, "You booked class " + classId);
 
         } catch (BookingAlreadyExistsException e) {
-          warn("Уже есть бронь (member=" + memberId + ", class=" + classId + ")");
-    long altClassId = classId + 1;
+            warn("Уже есть бронь (member=" + memberId + ", class=" + classId + ")");
+            long altClassId = classId + 1;
 
-    line(DIM + "Пробую другой classId = " + altClassId + RESET);
-    try {
-        var booking2 = bookingService.bookClass(memberId, altClassId);
-        ok("Booking created ✅");
-        line("🎟️ bookingId=" + booking2.getId() + " | member=" + memberId + " | class=" + altClassId);
-        notificationService.notifyMember(memberId, "You booked class " + altClassId);
-    } catch (RuntimeException ex) {
-        fail("Не получилось забронировать другой класс: " + ex.getMessage());
-    }
+            line(DIM + "Пробую другой classId = " + altClassId + RESET);
+            try {
+                var booking2 = bookingService.bookClass(memberId, altClassId);
+                ok("Booking created ✅");
+                line("🎟️ bookingId=" + booking2.getId() + " | member=" + memberId + " | class=" + altClassId);
+                notificationService.notifyMember(memberId, "You booked class " + altClassId);
+            } catch (RuntimeException ex) {
+                fail("Не получилось забронировать другой класс: " + ex.getMessage());
+                ex.printStackTrace();
             }
 
         } catch (RuntimeException e) {
