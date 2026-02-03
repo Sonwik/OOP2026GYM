@@ -40,3 +40,29 @@ from public.members m
          join public.membership_types t on t.name = 'Monthly'
 where m.full_name = 'Айжан Садыкова'
     limit 1;  
+create table if not exists public.membership_transactions (
+  id bigserial primary key,
+
+  member_id bigint not null
+    references public.members(id) on delete cascade,
+
+  type_id bigint not null
+    references public.membership_types(id),
+
+  start_date date not null,
+  end_date date not null,
+
+  base_price numeric(10,2) not null check (base_price >= 0),
+  final_price numeric(10,2) not null check (final_price >= 0),
+
+  created_at timestamptz not null default now(),
+
+
+  constraint chk_tx_dates check (end_date >= start_date)
+);
+
+create index if not exists idx_membership_tx_member_id
+  on public.membership_transactions(member_id);
+
+create index if not exists idx_membership_tx_created_at
+  on public.membership_transactions(created_at desc);
